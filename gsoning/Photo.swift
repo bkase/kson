@@ -14,7 +14,7 @@ import Foundation
 
   public dynamic var some_array: Array<String>! = nil
 
-  private dynamic let _type_complicated_array: Metadata! = nil
+  // private dynamic let _type_complicated_array: Metadata! = nil
   public dynamic var complicated_array: NSArray! = nil
   // etc.
 }
