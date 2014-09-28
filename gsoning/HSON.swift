@@ -92,6 +92,14 @@ class HSON {
 
   func inflate(typ: Typ, rawVal: AnyObject, propTypeMap: [String: String]) -> (Any?, AnyObject?) {
     switch typ {
+    case .Bool:
+      return (rawVal as? Bool, nil)
+    case .Int:
+      return (rawVal as? Int, nil)
+    case .Double:
+      return (rawVal as? Double, nil)
+    case .Float:
+      return (rawVal as? Float, nil)
     case .ArrayBool:
       return (rawVal as? [Bool], nil)
     case .ArrayInt:
@@ -179,6 +187,22 @@ class HSON {
 
   func unsafePointerWith(value: Any, ofType typ: Typ, objToSet obj: BaseJsonic, propName: String) -> COpaquePointer? {
     switch typ {
+    case .Bool:
+      let p: UnsafeMutablePointer<Bool> =
+          setProp(obj, withName: propName, andValue: value)
+      return COpaquePointer(p)
+    case .Int:
+      let p: UnsafeMutablePointer<Int> =
+          setProp(obj, withName: propName, andValue: value)
+      return COpaquePointer(p)
+    case .Double:
+      let p: UnsafeMutablePointer<Double> =
+          setProp(obj, withName: propName, andValue: value)
+      return COpaquePointer(p)
+    case .Float:
+      let p: UnsafeMutablePointer<Float> =
+          setProp(obj, withName: propName, andValue: value)
+      return COpaquePointer(p)
     case .ArrayBool:
       let p: UnsafeMutablePointer<[Bool]> =
           setProp(obj, withName: propName, andValue: value)

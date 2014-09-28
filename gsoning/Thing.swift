@@ -19,7 +19,8 @@ import Foundation
 
 @objc(Thing) public class Thing: BaseJsonic {
   public dynamic var i: Int = 0
-  public dynamic var i64: Int64 = 0
+  public dynamic var f: Float = 0
+  public dynamic var d: Double = 0
   public dynamic var s: NSString! = nil
 
   private dynamic let _type_multi: Thang! = nil
@@ -31,6 +32,6 @@ import Foundation
   public dynamic var thang: Thang! = nil
 
   lazy var string: String = {
-    return "i:\(self.i), i64:\(self.i64), s:\(self.s), b:\(self.b), arri:\(self.arri), arrs:\(self.arrs), multi:\(self.multi)"
+    return "i:\(self.i), f:\(self.f), d:\(self.d), s:\(self.s), b:\(self.b), arri:\(self.arri), arrs:\(self.arrs), multi:\(self.multi)"
   }()
 }

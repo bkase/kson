@@ -113,6 +113,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     let thang: AnyObject = ["recurse": "todo"] as AnyObject
     let thing: Thing = hson.make([
+      "b": true,
+      "i": 40,
+      "d": 23.5,
+      "f": 12.3,
       "s": "hello",
       "arrs": ["a", "b", "c"] as AnyObject,
       "arri": [1, 2, 3] as AnyObject,
