@@ -125,6 +125,11 @@ class HSON {
     return nil
   }
 
+  func inflateValuesForProps(obj: BaseJsonic, mirror: MirrorType, dict: NSDictionary) -> [Instruction] {
+    let t = inflateValuesForProps(obj, mirror: mirror, dict: dict, build: [], propType: [:])
+    return t.0
+  }
+
   // TODO: Make this a generator
   // from: https://gist.github.com/mchambers/67640d9c3e2bcffbb1e2
   // Returns instructions and propName->propType map
@@ -200,7 +205,7 @@ class HSON {
     }
   }
 
-  func storeNSObject(value: AnyObject?, ofType typ: Typ, objToSet obj: BaseJsonic, propName: String, propTypeMap: [String: String]) -> Bool {
+  func storeNSObject(value: AnyObject?, ofType typ: Typ, objToSet obj: BaseJsonic, propName: String) -> Bool {
     if let v: AnyObject = value {
       switch typ {
       case .NSString(let name):
@@ -219,11 +224,11 @@ class HSON {
   }
 
   // commit the instruction to the object
-  func persist(obj: BaseJsonic, instruction: Instruction, propTypeMap: [String: String]) {
+  func persist(obj: BaseJsonic, instruction: Instruction) {
     let (propName, propValue, propObjValue: AnyObject?, propTyp) = instruction
     if let p = unsafePointerWith(propValue, ofType: propTyp, objToSet: obj, propName: propName) {
       obj.registerProp(p, ofType: propTyp)
-    } else if storeNSObject(propObjValue, ofType: propTyp, objToSet: obj, propName: propName, propTypeMap: propTypeMap) {
+    } else if storeNSObject(propObjValue, ofType: propTyp, objToSet: obj, propName: propName) {
       println("Persisted NSObject")
     }
   }
@@ -232,13 +237,12 @@ class HSON {
     let obj: BaseJsonic = cls.`new`()
 
     let reflectable = cls.alloc()
-    let t = inflateValuesForProps(obj, mirror: reflect(reflectable), dict: rawDict, build: [], propType: [:])
-    let instrs = t.0
-    let propType = t.1
+    let instrs: [Instruction] =
+        inflateValuesForProps(obj, mirror: reflect(reflectable), dict: rawDict)
 
     println(instrs)
     for instruction in instrs {
-      persist(obj, instruction: instruction, propTypeMap: propType)
+      persist(obj, instruction: instruction)
     }
 
     println(obj)
