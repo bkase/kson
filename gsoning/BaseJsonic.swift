@@ -18,10 +18,15 @@ public class BaseJsonic: NSObject, JsonicProtocol {
     for prop in __registeredProps {
       let (ptr, typ) = prop
       switch typ {
-      case .String:
-        UnsafeMutablePointer<[UInt8]>(ptr).dealloc(1)
-      case .Array(let box):
-        // TODO: Handle int array
+      case .ArrayBool:
+        UnsafeMutablePointer<[Bool]>(ptr).dealloc(1)
+      case .ArrayInt:
+        UnsafeMutablePointer<[Int]>(ptr).dealloc(1)
+      case .ArrayDouble:
+        UnsafeMutablePointer<[Double]>(ptr).dealloc(1)
+      case .ArrayFloat:
+        UnsafeMutablePointer<[Float]>(ptr).dealloc(1)
+      case .ArrayString:
         UnsafeMutablePointer<[String]>(ptr).dealloc(1)
       default:
         break

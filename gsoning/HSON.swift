@@ -24,13 +24,15 @@ class HSON {
 
   enum Typ {
     case Bool
-    case String
     case NSString(S)
     case Int
-    case Int64
     case Double
     case Float
-    case Array(Box<Typ>)
+    case ArrayBool
+    case ArrayString
+    case ArrayInt
+    case ArrayDouble
+    case ArrayFloat
     case JsonicArray(S)
     case Jsonic(BaseJsonic.Type)
   }
@@ -45,20 +47,27 @@ class HSON {
   }
 
   func typeToTyp(name: String, val: Any, type: Any.Type, classString: String?) -> Typ? {
-    if type is Bool.Type {
+    switch type {
+    case _ where type is Bool.Type:
       return .Bool
-    } else if type is Int.Type {
+    case _ where type is Int.Type:
       return .Int
-    } else if type is Int64.Type {
-      return .Int64
-    } else if type is Double.Type {
+    case _ where type is Double.Type:
       return .Double
-    } else if type is Float.Type {
+    case _ where type is Float.Type:
       return .Float
-    } else if type is Array<Int>.Type {
-      return .Array(Box(Typ.Int))
-    } else if type is Array<String>.Type {
-      return .Array(Box(Typ.String))
+    case _ where type is Array<Bool>.Type:
+      return .ArrayBool
+    case _ where type is Array<Int>.Type:
+      return .ArrayInt
+    case _ where type is Array<Double>.Type:
+      return .ArrayDouble
+    case _ where type is Array<Float>.Type:
+      return .ArrayFloat
+    case _ where type is Array<String>.Type:
+      return .ArrayString
+    default:
+      break
     }
 
     if let clazz = classString {
@@ -83,9 +92,16 @@ class HSON {
 
   func inflate(typ: Typ, rawVal: AnyObject, propTypeMap: [String: String]) -> (Any?, AnyObject?) {
     switch typ {
-    case .Array(let box):
-      // TODO: Handle Array<Int>
-      return (rawVal as? Array<String>, nil)
+    case .ArrayBool:
+      return (rawVal as? [Bool], nil)
+    case .ArrayInt:
+      return (rawVal as? [Int], nil)
+    case .ArrayDouble:
+      return (rawVal as? [Double], nil)
+    case .ArrayFloat:
+      return (rawVal as? [Float], nil)
+    case .ArrayString:
+      return (rawVal as? [String], nil)
     case .NSString(let name):
       let str = rawVal as? NSString
       return (str, str)
@@ -116,16 +132,12 @@ class HSON {
   {
     var mutableBuild = build
     var mutablePropType = propType
-    for (var i=0;i<mirror.count;i++)
-    {
-      if (mirror[i].0 == "super")
-      {
+    for (var i=0;i<mirror.count;i++) {
+      if (mirror[i].0 == "super") {
         let t = inflateValuesForProps(obj, mirror: mirror[i].1, dict: dict, build: mutableBuild, propType: mutablePropType)
         mutableBuild = t.0
         mutablePropType = t.1
-      }
-      else
-      {
+      } else {
         let (name, child) = mirror[i]
 
         let classString: String? = strOfClass(obj, forProp: name)
@@ -137,7 +149,7 @@ class HSON {
         if (!name.hasPrefix("__")) {
           println("trying: \(name), val: \(child.value)")
           if let typ: Typ = typeToTyp(name, val: child.value, type: child.valueType, classString: classString) {
-            println("success: \(name)")
+            println("success typing: \(name)")
             if let rawVal: AnyObject = dict[name] {
               let inflation = inflate(typ, rawVal: rawVal, propTypeMap: mutablePropType)
               let anyOpt = inflation.0
@@ -153,24 +165,36 @@ class HSON {
     return (mutableBuild, mutablePropType)
   }
 
-  func unsafePointerWith(value: Any, ofType typ: Typ, objToSet obj: BaseJsonic, propName: String) -> COpaquePointer? {
-      println("unsafePointerWith \(typ)")
-    switch typ {
-    case .String:
-      let str = value as String
-      let p = UnsafeMutablePointer<String>.alloc(1)
-      p.initialize(str)
-      println("Setting prop to \(str)")
-      hson.setProp(obj as AnyObject, propName, p)
-      return COpaquePointer(p)
-    case .Array(let box):
-      // TODO: Handle Array<Int>
-      let p = UnsafeMutablePointer<[String]>.alloc(1)
-      p.initialize(value as [String])
-      println("Setting prop to \(value)")
-      hson.setProp(obj as AnyObject, propName, p)
-      return COpaquePointer(p)
+  func setProp<T>(obj: BaseJsonic, withName propName: String, andValue value: Any) -> UnsafeMutablePointer<T> {
+    let p = UnsafeMutablePointer<T>.alloc(1)
+    p.initialize(value as T)
+    hson.setProp(obj as AnyObject, propName, p)
+    return p
+  }
 
+  func unsafePointerWith(value: Any, ofType typ: Typ, objToSet obj: BaseJsonic, propName: String) -> COpaquePointer? {
+    switch typ {
+    case .ArrayBool:
+      let p: UnsafeMutablePointer<[Bool]> =
+          setProp(obj, withName: propName, andValue: value)
+      return COpaquePointer(p)
+    case .ArrayInt:
+      let p: UnsafeMutablePointer<[Int]> =
+          setProp(obj, withName: propName, andValue: value)
+      return COpaquePointer(p)
+    case .ArrayDouble:
+      let p: UnsafeMutablePointer<[Double]> =
+          setProp(obj, withName: propName, andValue: value)
+      return COpaquePointer(p)
+    case .ArrayFloat:
+      let p: UnsafeMutablePointer<[Float]> =
+          setProp(obj, withName: propName, andValue: value)
+      return COpaquePointer(p)
+    case .ArrayString:
+      let p: UnsafeMutablePointer<[String]> =
+          setProp(obj, withName: propName, andValue: value)
+      p.initialize(value as [String])
+      return COpaquePointer(p)
     default:
       return nil
     }
@@ -205,7 +229,7 @@ class HSON {
   }
 
   func make(rawDict: NSDictionary, cls: BaseJsonic.Type) -> BaseJsonic {
-    let obj = cls.`new`()
+    let obj: BaseJsonic = cls.`new`()
 
     let reflectable = cls.alloc()
     let t = inflateValuesForProps(obj, mirror: reflect(reflectable), dict: rawDict, build: [], propType: [:])

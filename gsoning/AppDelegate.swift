@@ -47,7 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // hson.setProp(thing, "i64", xp)
     hson.setProp(thing, "arrs", p)
     // setString(thing!, prop: "s", val: "hello")
-    thing!.registerProp(COpaquePointer(p), ofType: .Array(Box(.String)))
+    thing!.registerProp(COpaquePointer(p), ofType: .ArrayString)
     /*if let _ = thing!.multi as? NSArray {
       println("hello world")
     }*/
@@ -107,7 +107,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     let hson = HSON(clses: [
       "Thing": Thing.self,
-      "Thang": Thang.self
+      "Thang": Thang.self,
       /* other types deserialized by HSON (recursively) */
     ])
 
@@ -115,6 +115,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let thing: Thing = hson.make([
       "s": "hello",
       "arrs": ["a", "b", "c"] as AnyObject,
+      "arri": [1, 2, 3] as AnyObject,
       "multi": [thang, thang] as AnyObject
     ], cls: Thing.self) as Thing
 
