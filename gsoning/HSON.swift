@@ -17,14 +17,15 @@ class Box<T> {
 }
 
 class HSON {
-  typealias S = String
+  typealias Name = String
+  typealias Metatype = BaseJsonic.Type
   typealias Instruction = (String, Any, AnyObject?, Typ)
 
   private let hson: _HSON
 
   enum Typ {
     case Bool
-    case NSString(S)
+    case NSString(Name)
     case Int
     case Double
     case Float
@@ -33,8 +34,8 @@ class HSON {
     case ArrayInt
     case ArrayDouble
     case ArrayFloat
-    case JsonicArray(S)
-    case Jsonic(BaseJsonic.Type)
+    case JsonicArray(Name)
+    case Jsonic(Name, Metatype)
   }
 
   let clses: [String: BaseJsonic.Type]
@@ -76,6 +77,9 @@ class HSON {
       } else if clazz == "NSString" {
         return .NSString(name)
       }
+      if let metatype = clses[clazz] {
+        return .Jsonic(name, metatype)
+      }
     }
     return nil
   }
@@ -116,8 +120,13 @@ class HSON {
     case .JsonicArray(let name):
       let arr = inflateJsonicArray(name, rawVal: rawVal, propTypeMap: propTypeMap)
       return (arr, arr)
-    default:
-      return (nil, nil)
+    case .Jsonic(let name, let metatype):
+      if let rawDict = rawVal as? NSDictionary {
+        let jsonic = self.make(rawDict, cls: metatype)
+        return (jsonic, jsonic)
+      } else {
+        return (nil, nil)
+      }
     }
   }
 
@@ -229,16 +238,22 @@ class HSON {
     }
   }
 
+  func setProp(obj: AnyObject, withName name: Name, andNSObject value: AnyObject) {
+    Unmanaged.passRetained(value)
+    hson.setProp(obj, name, withNSObject: value)
+  }
+
   func storeNSObject(value: AnyObject?, ofType typ: Typ, objToSet obj: BaseJsonic, propName: String) -> Bool {
     if let v: AnyObject = value {
       switch typ {
       case .NSString(let name):
-        Unmanaged.passRetained(v)
-        hson.setProp(obj, name, withNSObject: v)
+        setProp(obj, withName: name, andNSObject: v)
+        return true
       case .JsonicArray(let name):
-        Unmanaged.passRetained(v)
-        println("Setting name: \(name), v: \(v), toobj: \(obj)")
-        hson.setProp(obj, name, withNSObject: v)
+        setProp(obj, withName: name, andNSObject: v)
+        return true
+      case .Jsonic(let name, let _):
+        setProp(obj, withName: name, andNSObject: v)
         return true
       default:
         return false

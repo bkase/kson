@@ -32,6 +32,6 @@ import Foundation
   public dynamic var thang: Thang! = nil
 
   lazy var string: String = {
-    return "i:\(self.i), f:\(self.f), d:\(self.d), s:\(self.s), b:\(self.b), arri:\(self.arri), arrs:\(self.arrs), multi:\(self.multi)"
+    return "i:\(self.i), f:\(self.f), d:\(self.d), s:\(self.s), b:\(self.b), arri:\(self.arri), arrs:\(self.arrs), thang: \(self.thang.string), multi:\(self.multi)"
   }()
 }

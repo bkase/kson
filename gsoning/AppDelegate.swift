@@ -118,6 +118,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       "d": 23.5,
       "f": 12.3,
       "s": "hello",
+      "thang": ["x": 3, "y": 8] as AnyObject,
       "arrs": ["a", "b", "c"] as AnyObject,
       "arri": [1, 2, 3] as AnyObject,
       "multi": [thang, thang] as AnyObject
