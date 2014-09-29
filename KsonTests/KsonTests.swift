@@ -1,15 +1,15 @@
 //
-//  gsoningTests.swift
-//  gsoningTests
+//  KsonTests.swift
+//  KsonTests
 //
-//  Created by Highlight on 9/25/14.
+//  Created by Highlight on 9/28/14.
 //  Copyright (c) 2014 Highlight. All rights reserved.
 //
 
 import UIKit
 import XCTest
 
-class gsoningTests: XCTestCase {
+class KsonTests: XCTestCase {
     
     override func setUp() {
         super.setUp()

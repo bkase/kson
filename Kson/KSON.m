@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <objc/runtime.h>
 #import "KSON.h"
-#import "gsoning-Swift.h"
+#import "Kson-Swift.h"
 
 @implementation _KSON: NSObject
 
