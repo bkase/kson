@@ -105,13 +105,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     arrays2()
 
-    let hson = HSON(clses: [
+    let hson = HSON(types: [
       "Thing": Thing.self,
       "Thang": Thang.self,
       /* other types deserialized by HSON (recursively) */
     ])
 
-    let thang: AnyObject = ["recurse": "todo"] as AnyObject
+    let thang: AnyObject = ["x": 1, "y": 9] as AnyObject
     let thing: Thing = hson.make([
       "b": true,
       "i": 40,
@@ -122,12 +122,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       "arrs": ["a", "b", "c"] as AnyObject,
       "arri": [1, 2, 3] as AnyObject,
       "multi": [thang, thang] as AnyObject
-    ], cls: Thing.self) as Thing
+    ], type: Thing.self) as Thing
 
-
-    println()
-    println("let thang: AnyObject = [\"recurse\": \"todo\"] as AnyObject\n" +
-      "let thing: Thing = hson.make([\"s\": \"hello\", \"arrs\": [\"a\", \"b\", \"c\"] as AnyObject, \"multi\": [thang, thang] as AnyObject], cls: Thing.self) as Thing")
     println()
     println()
     println(thing.string)

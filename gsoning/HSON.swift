@@ -38,13 +38,13 @@ class HSON {
     case Jsonic(Name, Metatype)
   }
 
-  let clses: [String: BaseJsonic.Type]
+  let types: [String: Metatype]
 
-  // clses a name->type pair for any JSON dicts
+  // types a name->type pair for any JSON dicts
   // ex: ["Thing": Thing.self, "Dog": Dog.self]
-  init(clses: [String: BaseJsonic.Type]) {
+  init(types: [String: Metatype]) {
     self.hson = _HSON()
-    self.clses = clses
+    self.types = types
   }
 
   func typeToTyp(name: String, val: Any, type: Any.Type, classString: String?) -> Typ? {
@@ -77,21 +77,42 @@ class HSON {
       } else if clazz == "NSString" {
         return .NSString(name)
       }
-      if let metatype = clses[clazz] {
-        return .Jsonic(name, metatype)
+      if let type = types[clazz] {
+        return .Jsonic(name, type)
       }
     }
     return nil
   }
 
-  func inflateJsonicArray(propName: String, rawVal: AnyObject, propTypeMap: [String: String]) -> NSArray {
+  func arrayType(propName: String, propTypeMap: [String: String]) -> Box<Metatype>? {
     let arrayElementTypePropName = "_type_\(propName)"
-    let arrayElementClassString = propTypeMap[arrayElementTypePropName]!
-    let arrayElementType = clses[arrayElementClassString]!
+    if let arrayElementClassString = propTypeMap[arrayElementTypePropName] {
+      if let arrayElementType = types[arrayElementClassString] {
+        return Box(arrayElementType)
+      } else {
+        println("WARNING: \(propName) does is not included in types map from KSON constructor, skipping")
+        return nil
+      }
+    } else {
+      println("WARNING: \(propName) does not include _type_\(propName) field just before its definition, skipping")
+      return nil
+    }
+  }
 
-    let arrayElement = arrayElementType.`new`()
-    // TODO: recurse
-    return [arrayElement, arrayElement] as NSArray
+  func inflateJsonicArray(propName: String, rawVal: AnyObject, propTypeMap: [String: String]) -> NSArray? {
+    if let arrayElementTypeBox = arrayType(propName, propTypeMap: propTypeMap) {
+      if let arr = rawVal as? Array<AnyObject> {
+        var build: [AnyObject] = []
+        for obj in arr {
+          if let dict = obj as? NSDictionary {
+            let arrayElement = self.make(dict, type: arrayElementTypeBox.v)
+            build += [arrayElement]
+          }
+        }
+        return build
+      }
+    }
+    return nil
   }
 
   func inflate(typ: Typ, rawVal: AnyObject, propTypeMap: [String: String]) -> (Any?, AnyObject?) {
@@ -120,9 +141,9 @@ class HSON {
     case .JsonicArray(let name):
       let arr = inflateJsonicArray(name, rawVal: rawVal, propTypeMap: propTypeMap)
       return (arr, arr)
-    case .Jsonic(let name, let metatype):
+    case .Jsonic(let name, let type):
       if let rawDict = rawVal as? NSDictionary {
-        let jsonic = self.make(rawDict, cls: metatype)
+        let jsonic = self.make(rawDict, type: type)
         return (jsonic, jsonic)
       } else {
         return (nil, nil)
@@ -272,10 +293,10 @@ class HSON {
     }
   }
 
-  func make(rawDict: NSDictionary, cls: BaseJsonic.Type) -> BaseJsonic {
-    let obj: BaseJsonic = cls.`new`()
+  func make(rawDict: NSDictionary, type: Metatype) -> BaseJsonic {
+    let obj: BaseJsonic = type.`new`()
 
-    let reflectable = cls.alloc()
+    let reflectable = type.alloc()
     let instrs: [Instruction] =
         inflateValuesForProps(obj, mirror: reflect(reflectable), dict: rawDict)
 
