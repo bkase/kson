@@ -18,6 +18,16 @@ public class BaseJsonic: NSObject, JsonicProtocol {
     for prop in __registeredProps {
       let (ptr, typ) = prop
       switch typ {
+      case .Bool:
+        UnsafeMutablePointer<Bool>(ptr).dealloc(1)
+      case .NSString(let _):
+        break
+      case .Int:
+        UnsafeMutablePointer<Int>(ptr).dealloc(1)
+      case .Double:
+        UnsafeMutablePointer<Double>(ptr).dealloc(1)
+      case .Float:
+        UnsafeMutablePointer<Float>(ptr).dealloc(1)
       case .ArrayBool:
         UnsafeMutablePointer<[Bool]>(ptr).dealloc(1)
       case .ArrayInt:
@@ -28,10 +38,11 @@ public class BaseJsonic: NSObject, JsonicProtocol {
         UnsafeMutablePointer<[Float]>(ptr).dealloc(1)
       case .ArrayString:
         UnsafeMutablePointer<[String]>(ptr).dealloc(1)
-      default:
+      case .JsonicArray(let _):
+        break
+      case .Jsonic(let _):
         break
       }
-      println("Dealloced registered prop")
     }
   }
 
