@@ -11,7 +11,7 @@
 
 static int test = 3;
 
-@interface _HSON : NSObject
+@interface _KSON : NSObject
 
 - (void) dumpInfo:(id)obj :(id)thang;
 - (void) setProp:(id)obj :(NSString*)prop :(void*)value;

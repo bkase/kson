@@ -16,12 +16,12 @@ class Box<T> {
   }
 }
 
-class HSON {
+class KSON {
   typealias Name = String
   typealias Metatype = BaseJsonic.Type
   typealias Instruction = (String, Any, AnyObject?, Typ)
 
-  private let hson: _HSON
+  private let kson: _KSON
 
   enum Typ {
     case Bool
@@ -43,7 +43,7 @@ class HSON {
   // types a name->type pair for any JSON dicts
   // ex: ["Thing": Thing.self, "Dog": Dog.self]
   init(types: [String: Metatype]) {
-    self.hson = _HSON()
+    self.kson = _KSON()
     self.types = types
   }
 
@@ -152,7 +152,7 @@ class HSON {
   }
 
   func strOfClass(obj: BaseJsonic, forProp propName: String) -> String? {
-    let uglyStrOpt: String? = hson.strOfClass(obj, forProp: propName)
+    let uglyStrOpt: String? = kson.strOfClass(obj, forProp: propName)
 
     if let uglyStr = uglyStrOpt {
       let s = uglyStr
@@ -211,7 +211,7 @@ class HSON {
   func setProp<T>(obj: BaseJsonic, withName propName: String, andValue value: Any) -> UnsafeMutablePointer<T> {
     let p = UnsafeMutablePointer<T>.alloc(1)
     p.initialize(value as T)
-    hson.setProp(obj as AnyObject, propName, p)
+    kson.setProp(obj as AnyObject, propName, p)
     return p
   }
 
@@ -261,7 +261,7 @@ class HSON {
 
   func setProp(obj: AnyObject, withName name: Name, andNSObject value: AnyObject) {
     Unmanaged.passRetained(value)
-    hson.setProp(obj, name, withNSObject: value)
+    kson.setProp(obj, name, withNSObject: value)
   }
 
   func storeNSObject(value: AnyObject?, ofType typ: Typ, objToSet obj: BaseJsonic, propName: String) -> Bool {

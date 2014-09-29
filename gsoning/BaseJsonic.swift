@@ -12,7 +12,7 @@ import Foundation
 }
 
 public class BaseJsonic: NSObject, JsonicProtocol {
-  private var __registeredProps: [(COpaquePointer, HSON.Typ)] = []
+  private var __registeredProps: [(COpaquePointer, KSON.Typ)] = []
 
   deinit {
     for prop in __registeredProps {
@@ -46,7 +46,7 @@ public class BaseJsonic: NSObject, JsonicProtocol {
     }
   }
 
-  func registerProp(ptr: COpaquePointer, ofType typ: HSON.Typ) {
+  func registerProp(ptr: COpaquePointer, ofType typ: KSON.Typ) {
     __registeredProps += [(ptr, typ)]
   }
 }

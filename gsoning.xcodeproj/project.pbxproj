@@ -7,9 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		97221AA619D5E8470018C606 /* nameOfClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97221AA519D5E8470018C606 /* nameOfClass.swift */; };
-		97221AA819D602AD0018C606 /* HArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97221AA719D602AD0018C606 /* HArray.swift */; };
-		97221AAA19D622120018C606 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97221AA919D622120018C606 /* Photo.swift */; };
 		9723DF2719D50AA200466501 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9723DF2619D50AA200466501 /* AppDelegate.swift */; };
 		9723DF2919D50AA200466501 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9723DF2819D50AA200466501 /* ViewController.swift */; };
 		9723DF2C19D50AA200466501 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9723DF2A19D50AA200466501 /* Main.storyboard */; };
@@ -17,10 +14,10 @@
 		9723DF3119D50AA200466501 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9723DF2F19D50AA200466501 /* LaunchScreen.xib */; };
 		9723DF3D19D50AA300466501 /* gsoningTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9723DF3C19D50AA300466501 /* gsoningTests.swift */; };
 		9723DF4719D50ABE00466501 /* Thing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9723DF4619D50ABE00466501 /* Thing.swift */; };
-		9723DF4A19D50E7E00466501 /* HSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 9723DF4919D50E7E00466501 /* HSON.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		9723DF4A19D50E7E00466501 /* KSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 9723DF4919D50E7E00466501 /* KSON.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		9723DF4F19D5152700466501 /* NSObject+Properties.m in Sources */ = {isa = PBXBuildFile; fileRef = 9723DF4E19D5152700466501 /* NSObject+Properties.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		9723DF5119D52F2C00466501 /* BaseJsonic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9723DF5019D52F2C00466501 /* BaseJsonic.swift */; };
-		9723DF5519D55A9C00466501 /* HSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9723DF5419D55A9C00466501 /* HSON.swift */; };
+		9723DF5519D55A9C00466501 /* KSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9723DF5419D55A9C00466501 /* KSON.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,9 +31,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		97221AA519D5E8470018C606 /* nameOfClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = nameOfClass.swift; sourceTree = "<group>"; };
-		97221AA719D602AD0018C606 /* HArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HArray.swift; sourceTree = "<group>"; };
-		97221AA919D622120018C606 /* Photo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		9723DF2119D50AA200466501 /* gsoning.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = gsoning.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9723DF2519D50AA200466501 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9723DF2619D50AA200466501 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -49,12 +43,12 @@
 		9723DF3C19D50AA300466501 /* gsoningTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = gsoningTests.swift; sourceTree = "<group>"; };
 		9723DF4619D50ABE00466501 /* Thing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Thing.swift; sourceTree = "<group>"; };
 		9723DF4819D50E7E00466501 /* gsoning-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "gsoning-Bridging-Header.h"; sourceTree = "<group>"; };
-		9723DF4919D50E7E00466501 /* HSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HSON.m; sourceTree = "<group>"; };
-		9723DF4B19D50E9D00466501 /* HSON.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HSON.h; sourceTree = "<group>"; };
+		9723DF4919D50E7E00466501 /* KSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSON.m; sourceTree = "<group>"; };
+		9723DF4B19D50E9D00466501 /* KSON.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSON.h; sourceTree = "<group>"; };
 		9723DF4D19D5152700466501 /* NSObject+Properties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Properties.h"; sourceTree = "<group>"; };
 		9723DF4E19D5152700466501 /* NSObject+Properties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Properties.m"; sourceTree = "<group>"; };
 		9723DF5019D52F2C00466501 /* BaseJsonic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseJsonic.swift; sourceTree = "<group>"; };
-		9723DF5419D55A9C00466501 /* HSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HSON.swift; sourceTree = "<group>"; };
+		9723DF5419D55A9C00466501 /* KSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KSON.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,8 +90,6 @@
 		9723DF2319D50AA200466501 /* gsoning */ = {
 			isa = PBXGroup;
 			children = (
-				97221AA719D602AD0018C606 /* HArray.swift */,
-				97221AA519D5E8470018C606 /* nameOfClass.swift */,
 				9723DF4C19D5152700466501 /* aqtoolkit */,
 				9723DF2619D50AA200466501 /* AppDelegate.swift */,
 				9723DF2819D50AA200466501 /* ViewController.swift */,
@@ -106,12 +98,11 @@
 				9723DF2F19D50AA200466501 /* LaunchScreen.xib */,
 				9723DF2419D50AA200466501 /* Supporting Files */,
 				9723DF4619D50ABE00466501 /* Thing.swift */,
-				9723DF4919D50E7E00466501 /* HSON.m */,
+				9723DF4919D50E7E00466501 /* KSON.m */,
 				9723DF4819D50E7E00466501 /* gsoning-Bridging-Header.h */,
-				9723DF4B19D50E9D00466501 /* HSON.h */,
+				9723DF4B19D50E9D00466501 /* KSON.h */,
 				9723DF5019D52F2C00466501 /* BaseJsonic.swift */,
-				9723DF5419D55A9C00466501 /* HSON.swift */,
-				97221AA919D622120018C606 /* Photo.swift */,
+				9723DF5419D55A9C00466501 /* KSON.swift */,
 			);
 			path = gsoning;
 			sourceTree = "<group>";
@@ -250,13 +241,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				97221AA619D5E8470018C606 /* nameOfClass.swift in Sources */,
 				9723DF2919D50AA200466501 /* ViewController.swift in Sources */,
-				9723DF4A19D50E7E00466501 /* HSON.m in Sources */,
+				9723DF4A19D50E7E00466501 /* KSON.m in Sources */,
 				9723DF4F19D5152700466501 /* NSObject+Properties.m in Sources */,
-				9723DF5519D55A9C00466501 /* HSON.swift in Sources */,
-				97221AAA19D622120018C606 /* Photo.swift in Sources */,
-				97221AA819D602AD0018C606 /* HArray.swift in Sources */,
+				9723DF5519D55A9C00466501 /* KSON.swift in Sources */,
 				9723DF5119D52F2C00466501 /* BaseJsonic.swift in Sources */,
 				9723DF4719D50ABE00466501 /* Thing.swift in Sources */,
 				9723DF2719D50AA200466501 /* AppDelegate.swift in Sources */,

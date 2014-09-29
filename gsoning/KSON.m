@@ -8,10 +8,10 @@
 
 #import <Foundation/Foundation.h>
 #import <objc/runtime.h>
-#import "HSON.h"
+#import "KSON.h"
 #import "gsoning-Swift.h"
 
-@implementation _HSON: NSObject
+@implementation _KSON: NSObject
 
 - (void) setProp:(id)obj :(NSString*)prop :(void *)value {
   object_setInstanceVariable(obj, [prop UTF8String], *(int **)value);

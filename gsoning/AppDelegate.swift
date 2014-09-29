@@ -15,104 +15,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   var window: UIWindow?
 
-  func makeIt() -> [String] {
-    var strArr = ["hello", "there", "child", "lots of bytes", "jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj"]
-    /*for i in 0..<1000 {
-      strArr += ["\(i)"]
-    }*/
-    return strArr
-  }
-
-  func setString(obj: BaseJsonic, prop: String, val: String) {
-    let sel = obj.setterForPropertyNamed(prop)
-    dispatch_sync(hackQ) {
-      NSThread.detachNewThreadSelector(sel, toTarget: obj, withObject: val)
-    }
-  }
-
-  func makeAndPrintArr<T: BaseJsonic>(t: T) {
-    let arr: Array<T> = [t]
-    println("NAME class: \(nameOfClass(T.self))")
-  }
-
-  func theFunc() {
-    var p = UnsafeMutablePointer<[String]>.alloc(1)
-    p.initialize(makeIt())
-
-    let hson = _HSON()
-    var thing: Thing? = Thing()
-    // thing?.arrs = []
-    //let xp = UnsafeMutablePointer<Int>.alloc(sizeof(Int))
-    //xp.initialize(4)
-    // hson.setProp(thing, "i64", xp)
-    hson.setProp(thing, "arrs", p)
-    // setString(thing!, prop: "s", val: "hello")
-    thing!.registerProp(COpaquePointer(p), ofType: .ArrayString)
-    /*if let _ = thing!.multi as? NSArray {
-      println("hello world")
-    }*/
-    let thang = Thang()
-    Unmanaged<Thang>.passRetained(thang)
-    thang.x = 4
-    thang.y = 2
-
-    makeAndPrintArr(thang)
-    hson.dumpInfo(thing, thang)
-    //println("Thing is now: \(thing!.string)")
-    println("Thing is thing: \(thing!.string)")
-    //xp.destroy()
-
-    thing = nil
-    // p.destroy()
-    // p.dealloc(sizeof([String].self))
-    println("Thing destroyed win")
-  }
-
-  func yo<T: BaseJsonic>(input: Any) -> Bool {
-    if let _ = input as? Array<T> {
-      return true
-    } else {
-      return false
-    }
-  }
-
-  /*func arrays() {
-    let x: Any = [Thing(), Thing()]
-    println(reflect(x).disposition)
-    if let _ = (x as? NSArray) as? Array<BaseJsonic> {
-      println("YES")
-    } else {
-      println("no")
-    }
-
-    /*if let _ = x as? (Array<T> where T: BaseJsonic) {
-      println("YES typed")
-    } else {
-      println("no typed")
-    }*/
-  }*/
-
-  func arrays2() {
-    let x: Any = NSArray()
-    if let _ = x as? NSArray {
-      println("yes)")
-    } else {
-      println("no")
-    }
-  }
-
   func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 
-    arrays2()
-
-    let hson = HSON(types: [
+    let kson = KSON(types: [
       "Thing": Thing.self,
       "Thang": Thang.self,
       /* other types deserialized by HSON (recursively) */
     ])
 
     let thang: AnyObject = ["x": 1, "y": 9] as AnyObject
-    let thing: Thing = hson.make([
+    let thing: Thing = kson.make([
       "b": true,
       "i": 40,
       "d": 23.5,
@@ -154,7 +66,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   func applicationWillTerminate(application: UIApplication) {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
   }
-
-
 }
 
