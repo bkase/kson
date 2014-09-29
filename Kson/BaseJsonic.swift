@@ -8,10 +8,7 @@
 
 import Foundation
 
-@objc protocol JsonicProtocol {
-}
-
-public class BaseJsonic: NSObject, JsonicProtocol {
+public class BaseJsonic: NSObject {
   private var __registeredProps: [(COpaquePointer, KSON.Typ)] = []
 
   deinit {
