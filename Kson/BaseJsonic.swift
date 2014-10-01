@@ -9,7 +9,7 @@
 import Foundation
 
 public class BaseJsonic: NSObject {
-  private var __registeredProps: [(COpaquePointer, KSON.Typ)] = []
+  private var __registeredProps: [(COpaquePointer, KSON2.Typ)] = []
 
   deinit {
     for prop in __registeredProps {
@@ -39,11 +39,13 @@ public class BaseJsonic: NSObject {
         break
       case .Jsonic(let _):
         break
+      case .NSDictionary(let _):
+        break
       }
     }
   }
 
-  func registerProp(ptr: COpaquePointer, ofType typ: KSON.Typ) {
+  func registerProp(ptr: COpaquePointer, ofType typ: KSON2.Typ) {
     __registeredProps += [(ptr, typ)]
   }
 }

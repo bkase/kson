@@ -8,6 +8,7 @@
 
 import UIKit
 import XCTest
+import Kson
 
 class KsonPerformance: XCTestCase {
   
@@ -24,6 +25,24 @@ class KsonPerformance: XCTestCase {
   func testPerformanceExample() {
     // This is an example of a performance test case.
     self.measureBlock() {
+      /*let kson = KSON2(types: [
+      "Thing": Thing.self,
+      "Thang": Thang.self
+      /* other types deserialized by HSON (recursively) */
+      ])
+
+    let thang: AnyObject = ["x": 1, "y": 9] as AnyObject
+    let thing: Thing = kson.make([
+      "b": true,
+      "i": 40,
+      "d": 23.5,
+      "f": 12.3,
+      "s": "hello",
+      "thang": ["x": 3, "y": 8] as AnyObject,
+      "arrs": ["a", "b", "c"] as AnyObject,
+      "arri": [1, 2, 3] as AnyObject,
+      "multi": [thang, thang] as AnyObject
+    ], type: Thing.self) as Thing*/
       // Put the code you want to measure the time of here.
     }
   }

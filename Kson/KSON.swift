@@ -16,7 +16,7 @@ class Box<T> {
   }
 }
 
-class KSON {
+public class KSON2 {
   typealias Name = String
   typealias Metatype = BaseJsonic.Type
   typealias Instruction = (String, Any, AnyObject?, Typ)
@@ -36,6 +36,7 @@ class KSON {
     case ArrayFloat
     case JsonicArray(Name)
     case Jsonic(Name, Metatype)
+    case NSDictionary(Name)
   }
 
   let types: [String: Metatype]
@@ -76,6 +77,8 @@ class KSON {
         return .JsonicArray(name)
       } else if clazz == "NSString" {
         return .NSString(name)
+      } else if clazz == "NSDictionary" {
+        return .NSDictionary(name)
       }
       if let type = types[clazz] {
         return .Jsonic(name, type)
@@ -145,6 +148,12 @@ class KSON {
       if let rawDict = rawVal as? NSDictionary {
         let jsonic = self.make(rawDict, type: type)
         return (jsonic, jsonic)
+      } else {
+        return (nil, nil)
+      }
+    case .NSDictionary(let name):
+      if let rawDict = rawVal as? NSDictionary {
+        return (rawDict, rawDict)
       } else {
         return (nil, nil)
       }
@@ -274,6 +283,9 @@ class KSON {
         setProp(obj, withName: name, andNSObject: v)
         return true
       case .Jsonic(let name, let _):
+        setProp(obj, withName: name, andNSObject: v)
+        return true
+      case .NSDictionary(let name):
         setProp(obj, withName: name, andNSObject: v)
         return true
       default:

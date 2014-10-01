@@ -31,8 +31,10 @@ import Foundation
   public dynamic var arrs: [String]! = nil
   public dynamic var thang: Thang! = nil
 
+  public dynamic var skip: NSDictionary! = nil
+
   lazy var string: String = {
     let arr = self.multi as Array<Thang>
-    return "i:\(self.i), f:\(self.f), d:\(self.d), s:\(self.s), b:\(self.b), arri:\(self.arri), arrs:\(self.arrs), thang: \(self.thang.string), multi:\(arr.map{ t in t.string })"
+    return "i:\(self.i), f:\(self.f), d:\(self.d), s:\(self.s), b:\(self.b), arri:\(self.arri), arrs:\(self.arrs), thang: \(self.thang.string), multi:\(arr.map{ t in t.string }), skip:\(self.skip)"
   }()
 }

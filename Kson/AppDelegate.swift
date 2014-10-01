@@ -17,7 +17,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 
-    let kson = KSON(types: [
+    let start = NSDate()
+    let kson = KSON2(types: [
       "Thing": Thing.self,
       "Thang": Thang.self,
       /* other types deserialized by HSON (recursively) */
@@ -33,8 +34,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       "thang": ["x": 3, "y": 8] as AnyObject,
       "arrs": ["a", "b", "c"] as AnyObject,
       "arri": [1, 2, 3] as AnyObject,
-      "multi": [thang, thang] as AnyObject
+      "multi": [thang, thang] as AnyObject,
+      "skip": ["x": 1, "y": "str", "z": true] as AnyObject
     ], type: Thing.self) as Thing
+    let elapsed = NSDate().timeIntervalSince1970 - start.timeIntervalSince1970
+    println(elapsed)
 
     println()
     println()
