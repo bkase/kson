@@ -22,6 +22,9 @@ import Foundation
   public dynamic var f: Float = 0
   public dynamic var d: Double = 0
   public dynamic var s: NSString! = nil
+  public dynamic var sx: NSString! = nil
+  public dynamic var sy: NSString! = nil
+  public dynamic var sz: NSString! = nil
 
   private dynamic let _type_multi: Thang! = nil
   public dynamic var multi: NSArray! = nil

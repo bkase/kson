@@ -40,7 +40,6 @@
 
     if (strcmp(name, [prop UTF8String]) == 0) {
       object_setIvar(obj, var, value);
-      NSLog(@"I set it");
       return;
     }
   }

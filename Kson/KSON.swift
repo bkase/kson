@@ -195,13 +195,10 @@ public class KSON2 {
         let classString: String? = strOfClass(obj, forProp: name)
         if let str = classString {
           mutablePropType[name] = str
-          println("Got classString: \(str)")
         }
 
         if (!name.hasPrefix("__")) {
-          println("trying: \(name), val: \(child.value)")
           if let typ: Typ = typeToTyp(name, val: child.value, type: child.valueType, classString: classString) {
-            println("success typing: \(name)")
             if let rawVal: AnyObject = dict[name] {
               let inflation = inflate(typ, rawVal: rawVal, propTypeMap: mutablePropType)
               let anyOpt = inflation.0
@@ -301,7 +298,6 @@ public class KSON2 {
     if let p = unsafePointerWith(propValue, ofType: propTyp, objToSet: obj, propName: propName) {
       obj.registerProp(p, ofType: propTyp)
     } else if storeNSObject(propObjValue, ofType: propTyp, objToSet: obj, propName: propName) {
-      println("Persisted NSObject")
     }
   }
 
@@ -312,13 +308,71 @@ public class KSON2 {
     let instrs: [Instruction] =
         inflateValuesForProps(obj, mirror: reflect(reflectable), dict: rawDict)
 
-    println(instrs)
     for instruction in instrs {
       persist(obj, instruction: instruction)
     }
 
-    println(obj)
-
     return obj
+  }
+
+  // from: https://gist.github.com/mchambers/67640d9c3e2bcffbb1e2
+  func deflate(typ: Typ, swiftVal val: Any) -> NSObject {
+    switch typ {
+    case .Bool:
+      return (val as Bool) as NSObject
+    case .Int:
+      return NSNumber(int: CInt(val as Int))
+    case .Double:
+      return NSNumber(double: CDouble(val as Double))
+    case .Float:
+      return NSNumber(float: CFloat(val as Float))
+    case .Jsonic(let _, let _):
+      println("Jsonic at: \(val)")
+      return toJson(val as BaseJsonic)
+    case .ArrayBool, .ArrayInt, .ArrayDouble, .ArrayFloat, .ArrayString:
+      return val as NSArray
+    case .NSString(let _):
+      return val as NSString
+    case .NSDictionary(let _):
+      return val as NSDictionary
+    case .JsonicArray(let name):
+      let arr = val as NSArray
+      var build = NSMutableArray.arrayWithCapacity(arr.count)
+      arr.enumerateObjectsUsingBlock { obj, idx, stop in
+        build.addObject(self.toJson(obj as BaseJsonic))
+      }
+      return build as NSArray
+    }
+  }
+
+  // TODO: DRYify this and inflateValuesForProps
+  func deflateValuesForProps(obj: BaseJsonic, mirror: MirrorType, build: NSMutableDictionary) -> NSMutableDictionary
+  {
+    var mutableBuild = build
+    for (var i=0;i<mirror.count;i++) {
+      if (mirror[i].0 == "super") {
+        mutableBuild = deflateValuesForProps(obj, mirror: mirror[i].1, build: mutableBuild)
+      } else {
+        let (name, child) = mirror[i]
+
+        let classString: String? = strOfClass(obj, forProp: name)
+
+        if (!name.hasPrefix("__") && !name.hasPrefix("_type_")) {
+          if let typ: Typ = typeToTyp(name, val: child.value, type: child.valueType, classString: classString) {
+            println("Looking at: \(name): \(child.value)")
+            if (child.value as Any!) == nil {
+              mutableBuild[name] = NSNull()
+            } else {
+              mutableBuild[name] = deflate(typ, swiftVal: child.value)
+            }
+          }
+        }
+      }
+    }
+    return mutableBuild
+  }
+
+  func toJson(obj: BaseJsonic) -> NSDictionary {
+    return deflateValuesForProps(obj, mirror: reflect(obj), build: NSMutableDictionary())
   }
 }

@@ -44,6 +44,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     println()
     println(thing.string)
 
+    println()
+    println()
+    println("Going backwards")
+    println(kson.toJson(thing))
+
     // theFunc()
     // Override point for customization after application launch.
     return true
