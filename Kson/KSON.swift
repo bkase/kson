@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Box<T> {
+class _Box<T> {
   let v: T
 
   init(_ v: T) {
@@ -87,11 +87,11 @@ public class KSON2 {
     return nil
   }
 
-  func arrayType(propName: String, propTypeMap: [String: String]) -> Box<Metatype>? {
+  func arrayType(propName: String, propTypeMap: [String: String]) -> _Box<Metatype>? {
     let arrayElementTypePropName = "_type_\(propName)"
     if let arrayElementClassString = propTypeMap[arrayElementTypePropName] {
       if let arrayElementType = types[arrayElementClassString] {
-        return Box(arrayElementType)
+        return _Box(arrayElementType)
       } else {
         println("WARNING: \(propName) does is not included in types map from KSON constructor, skipping")
         return nil
