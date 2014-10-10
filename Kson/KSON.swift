@@ -337,7 +337,7 @@ public class KSON2 {
       return val as NSDictionary
     case .JsonicArray(let name):
       let arr = val as NSArray
-      var build = NSMutableArray.arrayWithCapacity(arr.count)
+      var build = NSMutableArray(capacity: arr.count)
       arr.enumerateObjectsUsingBlock { obj, idx, stop in
         build.addObject(self.toJson(obj as BaseJsonic))
       }
