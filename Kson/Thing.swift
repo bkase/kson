@@ -20,7 +20,7 @@ import Foundation
 @objc(Thing) public class Thing: BaseJsonic {
   public dynamic var i: Int = 0
   public dynamic var f: Float = 0
-  public dynamic var d: Double = 0
+  public dynamic var d: NSNumber! = nil
   public dynamic var s: NSString! = nil
   public dynamic var sx: NSString! = nil
   public dynamic var sy: NSString! = nil

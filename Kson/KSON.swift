@@ -54,8 +54,6 @@ public class KSON2 {
       return .Bool
     case _ where type is Int.Type:
       return .Int
-    case _ where type is Double.Type:
-      return .Double
     case _ where type is Float.Type:
       return .Float
     case _ where type is Array<Bool>.Type:
@@ -79,6 +77,8 @@ public class KSON2 {
         return .NSString(name)
       } else if clazz == "NSDictionary" {
         return .NSDictionary(name)
+      } else if clazz == "NSNumber" {
+        return .Double
       }
       if let type = types[clazz] {
         return .Jsonic(name, type)
@@ -125,11 +125,8 @@ public class KSON2 {
     case .Int:
       return (rawVal as? Int, nil)
     case .Double:
-      if let nsnumber = rawVal as? NSNumber {
-        return (nsnumber.doubleValue, nil)
-      } else {
-        return (nil, nil)
-      }
+      let v = rawVal as? NSNumber
+      return (v, v)
     case .Float:
       return (rawVal as? Float, nil)
     case .ArrayBool:
@@ -239,10 +236,6 @@ public class KSON2 {
       let p: UnsafeMutablePointer<Int> =
           setProp(obj, withName: propName, andValue: value)
       return COpaquePointer(p)
-    case .Double:
-      let p: UnsafeMutablePointer<Double> =
-          setProp(obj, withName: propName, andValue: value)
-      return COpaquePointer(p)
     case .Float:
       let p: UnsafeMutablePointer<Float> =
           setProp(obj, withName: propName, andValue: value)
@@ -281,6 +274,9 @@ public class KSON2 {
   func storeNSObject(value: AnyObject?, ofType typ: Typ, objToSet obj: BaseJsonic, propName: String) -> Bool {
     if let v: AnyObject = value {
       switch typ {
+      case .Double(let name):
+        setProp(obj, withName: propName, andNSObject: v)
+        return true
       case .NSString(let name):
         setProp(obj, withName: name, andNSObject: v)
         return true
