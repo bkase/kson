@@ -125,7 +125,11 @@ public class KSON2 {
     case .Int:
       return (rawVal as? Int, nil)
     case .Double:
-      return (rawVal as? Double, nil)
+      if let nsnumber = rawVal as? NSNumber {
+        return (nsnumber.doubleValue, nil)
+      } else {
+        return (nil, nil)
+      }
     case .Float:
       return (rawVal as? Float, nil)
     case .ArrayBool:
@@ -133,7 +137,11 @@ public class KSON2 {
     case .ArrayInt:
       return (rawVal as? [Int], nil)
     case .ArrayDouble:
-      return (rawVal as? [Double], nil)
+      if let nsnumbers = rawVal as? [NSNumber] {
+        return (nsnumbers.map({ x in x.doubleValue }), nil)
+      } else {
+        return (nil, nil)
+      }
     case .ArrayFloat:
       return (rawVal as? [Float], nil)
     case .ArrayString:

@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "NSObject+Properties.h"
+#import "aqtoolkit/NSObject+Properties.h"
 
 static int test = 3;
 
