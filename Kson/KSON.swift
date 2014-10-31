@@ -316,6 +316,7 @@ public class KSON2 {
       persist(obj, instruction: instruction)
     }
 
+    obj.complete(rawDict)
     return obj
   }
 

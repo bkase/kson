@@ -11,6 +11,14 @@ import Foundation
 public class BaseJsonic: NSObject {
   private var __registeredProps: [(COpaquePointer, KSON2.Typ)] = []
 
+  override init() {
+    
+  }
+
+  func complete(dict: NSDictionary) {
+    // override this to finish anything KSON misses
+  }
+
   deinit {
     for prop in __registeredProps {
       let (ptr, typ) = prop
