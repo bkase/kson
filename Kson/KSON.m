@@ -27,24 +27,7 @@
 }
 
 - (void) setProp:(id)obj :(NSString*)prop withNSObject:(id)value {
-  unsigned int varCount;
-
-  // Thing* thing = [[Thing alloc] init];
-
-  Ivar *vars = class_copyIvarList([obj class], &varCount);
-
-  for (int i = 0; i < varCount; i++) {
-    Ivar var = vars[i];
-
-    const char* name = ivar_getName(var);
-
-    if (strcmp(name, [prop UTF8String]) == 0) {
-      object_setIvar(obj, var, value);
-      break;
-    }
-  }
-
-  free(vars);
+  object_setInstanceVariable(obj, [prop UTF8String], (void *)value);
 }
 
 - (void) dumpInfo:(id)obj :(id)thang {
